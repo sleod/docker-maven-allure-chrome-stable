@@ -1,11 +1,12 @@
 FROM ubuntu:latest
 
 # common for all images
-RUN apt update -y \
-	&& apt upgrade -y \
-	&& apt install -f \
+RUN apt-get update -y \
+	&& apt-get upgrade -y \
+	&& apt-get install -f \
  	&& apt-get install wget -qqy \
-  	&& apt-get install gzip -qqy 
+  	&& apt-get install gzip -qqy \
+   	&& apt-get install gpg unzip -qqy
 
 # Default to UTF-8 file.encoding
 ENV LANG='de_CH.UTF-8' LANGUAGE='de_CH:de' LC_ALL='de_CH.UTF-8'
@@ -38,8 +39,17 @@ ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
 # Google Chrome
 ARG CHROME_VERSION_STABLE=117.0.5938.92
 
-RUN apt-get -qqy install gpg unzip \
-	&& wget -q -O /tmp/google.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
+RUN apt-get update -y \
+	&& apt-get install -y fonts-liberation \
+   	&& apt-get install -y libcurl4 \
+    	&& apt-get install -y libgbm1 \
+     	&& apt-get install -y libgtk-4-1 \
+	&& apt-get install -y libu2f-udev \
+  	&& apt-get install -y libvulkan1 \
+  	&& apt-get install -y libxkbcommon0 \
+        && apt-get install -y xdg-utils
+
+RUN  wget -q -O /tmp/google.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
  	&& dpkg -i /tmp/google.deb \
 	&& rm /tmp/google.deb \
 	&& rm -rf /var/lib/apt/lists/* /var/cache/apt/* \

@@ -20,9 +20,9 @@ RUN echo Verifying install ... \
     && echo java --version && java --version \
     && echo Complete.
 
-RUN yum install -y tar which gzip
+# MAVEN
+RUN apt-get install gzip -y
 
-# MAVENok
 ENV MAVEN_HOME /usr/share/maven
 
 COPY --from=maven:3.9.4-eclipse-temurin-11 ${MAVEN_HOME} ${MAVEN_HOME}

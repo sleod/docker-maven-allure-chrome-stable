@@ -63,7 +63,7 @@ RUN set -x && tar=allure-commandline-$ALLURE_VERSION.zip \
 	&& wget -q -O /tmp/allure.zip $url \
  	&& unzip /tmp/allure.zip -d /opt \
   	&& rm /tmp/allure.zip \
-   	&& location=/opt/allure-$ALLURE_VERSION
+   	&& location=/opt/allure-$ALLURE_VERSION \
 	&& chmod 755 $location \
 	&& ln -s $location/bin/allure /usr/bin
 

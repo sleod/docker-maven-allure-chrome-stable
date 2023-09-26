@@ -21,7 +21,10 @@ RUN apt-get update -y \
 	&& apt-get install -y libu2f-udev \
   	&& apt-get install -y libvulkan1 \
   	&& apt-get install -y libxkbcommon0 \
-        && apt-get install -y xdg-utils
+        && apt-get install -y xdg-utils \
+	&& apt-get install -y libnspr4 \
+ 	&& apt-get install -y libnss3 \
+ 	&& apt-get install -y libasound2
 	
 ARG CHROME_VERSION_STABLE=117.0.5938.92
 

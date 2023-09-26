@@ -5,7 +5,7 @@ FROM maven:3.9.2-eclipse-temurin-17
 ARG CHROME_VERSION_STABLE=117.0.5938.92
 
 RUN apt update -y \
-	&& apt upgrade -y
+	&& apt upgrade -y \
 	&& apt-get update -qqy \
 	&& apt-get -qqy install gpg unzip \
 	&& wget -q -O /tmp/google.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \

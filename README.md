@@ -12,7 +12,7 @@ Docker image for Java based automated UI tests with allure report.
 ## Tags
 > * jdk-17
 
-##Reference
+## Reference
 * [The Chrome for Testing availability dashboard](https://googlechromelabs.github.io/chrome-for-testing/)
 * [Google JSON API endpoints](https://github.com/GoogleChromeLabs/chrome-for-testing#json-api-endpoints)
 

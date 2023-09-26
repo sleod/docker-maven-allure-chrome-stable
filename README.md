@@ -10,7 +10,7 @@ Docker image for Java based automated UI tests with chromedriver and allure repo
 > * Chromme Driver
 
 ## Tags
-> * jdk-17
+> * [jdk-17](https://github.com/sleod/docker-maven-allure-chrome-stable/blob/main/jdk-17/Dockerfile)
 
 ## Reference
 * [The Chrome for Testing availability dashboard](https://googlechromelabs.github.io/chrome-for-testing/)

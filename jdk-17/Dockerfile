@@ -1,5 +1,8 @@
 FROM ubuntu:latest
 
+# Default to UTF-8 file.encoding
+ENV LANG='de_CH.UTF-8' LANGUAGE='de_CH:de' LC_ALL='de_CH.UTF-8'
+
 # common for all images
 RUN apt-get update -y \
 	&& apt-get upgrade -y \
@@ -8,8 +11,32 @@ RUN apt-get update -y \
   	&& apt-get install gzip -qqy \
    	&& apt-get install gpg unzip -qqy
 
-# Default to UTF-8 file.encoding
-ENV LANG='de_CH.UTF-8' LANGUAGE='de_CH:de' LC_ALL='de_CH.UTF-8'
+
+# Google Chrome
+RUN apt-get update -y \
+	&& apt-get install -y fonts-liberation \
+   	&& apt-get install -y libcurl4 \
+    	&& apt-get install -y libgbm1 \
+     	&& apt-get install -y libgtk-4-1 \
+	&& apt-get install -y libu2f-udev \
+  	&& apt-get install -y libvulkan1 \
+  	&& apt-get install -y libxkbcommon0 \
+        && apt-get install -y xdg-utils
+	
+ARG CHROME_VERSION_STABLE=117.0.5938.92
+
+RUN  wget -q -O /tmp/google.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
+ 	&& dpkg -i /tmp/google.deb \
+	&& rm /tmp/google.deb \
+	&& rm -rf /var/lib/apt/lists/* /var/cache/apt/* \
+	&& google-chrome --version
+
+# ChromeDriver
+RUN wget -q -O /tmp/chromedriver.zip https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/$CHROME_VERSION_STABLE/linux64/chromedriver-linux64.zip \
+	&& unzip /tmp/chromedriver.zip -d /opt \
+	&& rm /tmp/chromedriver.zip \
+	&& chmod 755 /opt/chromedriver-linux64/chromedriver \
+	&& ln -s /opt/chromedriver-linux64/chromedriver /usr/bin/chromedriver
 
 # JDK 17
 ENV JAVA_HOME /usr/lib/jvm/java-17-openjdk-amd64
@@ -36,29 +63,3 @@ ARG MAVEN_VERSION=3.9.4
 ARG USER_HOME_DIR="/root"
 ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
 
-# Google Chrome
-ARG CHROME_VERSION_STABLE=117.0.5938.92
-
-RUN apt-get update -y \
-	&& apt-get install -y fonts-liberation \
-   	&& apt-get install -y libcurl4 \
-    	&& apt-get install -y libgbm1 \
-     	&& apt-get install -y libgtk-4-1 \
-	&& apt-get install -y libu2f-udev \
-  	&& apt-get install -y libvulkan1 \
-  	&& apt-get install -y libxkbcommon0 \
-        && apt-get install -y xdg-utils
-
-RUN  wget -q -O /tmp/google.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
- 	&& dpkg -i /tmp/google.deb \
-	&& rm /tmp/google.deb \
-	&& rm -rf /var/lib/apt/lists/* /var/cache/apt/* \
-	&& google-chrome --version
-
-# ChromeDriver
-RUN wget -q -O /tmp/chromedriver.zip https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/$CHROME_VERSION_STABLE/linux64/chromedriver-linux64.zip \
-	&& unzip /tmp/chromedriver.zip -d /opt \
-	&& rm /tmp/chromedriver.zip \
-	&& mv /opt/chromedriver /opt/chromedriver-$CHROME_VERSION_STABLE \
-	&& chmod 755 /opt/chromedriver-$CHROME_VERSION_STABLE \
-	&& ln -s /opt/chromedriver-$CHROME_VERSION_STABLE /usr/bin/chromedriver

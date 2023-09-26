@@ -1,6 +1,6 @@
 # sleodlx/maven-allure-chrome-stable
 ## Description
-Docker image for Java based automated UI tests with allure report.
+Docker image for Java based automated UI tests with chromedriver and allure report.
 
 ## Contained Libs
 > * openjdk 17

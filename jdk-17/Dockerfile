@@ -3,27 +3,27 @@ FROM ubuntu:latest
 # common for all images
 RUN apt-get update -qqy \
 	&& apt-get upgrade -qqy \
-	&& apt-get install -f
-
-ENV JAVA_HOME /opt/java/openjdk
-ENV PATH $JAVA_HOME/bin:$PATH
+	&& apt-get install -f \
+ 	&& apt-get install wget -qqy \
+  	&& apt-get install gzip -qqy
 
 # Default to UTF-8 file.encoding
 ENV LANG='de_CH.UTF-8' LANGUAGE='de_CH:de' LC_ALL='de_CH.UTF-8'
 
 # JDK 17
-RUN apt install -y openjdk-17-jdk
+ENV JAVA_HOME /usr/lib/jvm/java-17-openjdk-amd64
+ENV PATH $JAVA_HOME/bin:$PATH
+
+RUN apt-get install openjdk-17-jdk -qqy
 
 RUN echo Verifying install ... \
     && fileEncoding="$(echo 'System.out.println(System.getProperty("file.encoding"))' | jshell -s -)"; [ "$fileEncoding" = 'UTF-8' ]; rm -rf ~/.java \
-    && echo javac --version && javac --version \
     && echo java --version && java --version \
     && echo Complete.
 
 # MAVEN
-RUN apt-get install gzip -y
-
 ENV MAVEN_HOME /usr/share/maven
+ENV PATH $MAVEN_HOME/bin:$PATH
 
 COPY --from=maven:3.9.4-eclipse-temurin-11 ${MAVEN_HOME} ${MAVEN_HOME}
 COPY --from=maven:3.9.4-eclipse-temurin-11 /usr/local/bin/mvn-entrypoint.sh /usr/local/bin/mvn-entrypoint.sh

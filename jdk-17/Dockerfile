@@ -6,13 +6,11 @@ ARG CHROME_VERSION_STABLE=117.0.5938.92
 
 RUN apt-get update -qqy \
 	&& apt-get -qqy install gpg unzip \
-	&& wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-	&& echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
-	&& apt-get update -qqy \
-	&& apt-get -qqy install google-chrome-stable=$CHROME_VERSION_STABLE \
-	&& rm /etc/apt/sources.list.d/google-chrome.list \
+	&& wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O /tmp/google.deb \
+ 	&& dpkg -i google.deb \
+	&& rm /tmp/google.deb \
 	&& rm -rf /var/lib/apt/lists/* /var/cache/apt/* \
-	&& sed -i 's/"$HERE\/chrome"/"$HERE\/chrome" --no-sandbox/g' /opt/google/chrome/google-chrome
+	&& google-chrome --version
 
 # ChromeDriver
 

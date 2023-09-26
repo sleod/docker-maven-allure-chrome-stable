@@ -53,6 +53,20 @@ RUN echo Verifying install ... \
     && echo java --version && java --version \
     && echo $JAVA_HOME.
 
+# Allure CLi
+ARG ALLURE_VERSION=2.24.0
+ARG REPO_BASE=https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/
+
+#https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.24.0/allure-commandline-2.24.0.zip
+RUN set -x && tar=allure-commandline-$ALLURE_VERSION.zip \
+	&& url=$REPO_BASE$ALLURE_VERSION/$tar \
+	&& wget -q -O /tmp/allure.zip $url \
+ 	&& unzip /tmp/allure.zip -d /opt \
+  	&& rm /tmp/allure.zip \
+   	&& location=/opt/allure-$ALLURE_VERSION
+	&& chmod 755 $location \
+	&& ln -s $location/bin/allure /usr/bin
+
 # MAVEN
 ENV MAVEN_HOME /usr/share/maven
 ENV PATH $MAVEN_HOME/bin:$PATH
@@ -66,4 +80,3 @@ RUN ln -s ${MAVEN_HOME}/bin/mvn /usr/bin/mvn
 ARG MAVEN_VERSION=3.9.4
 ARG USER_HOME_DIR="/root"
 ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
-

@@ -6,7 +6,8 @@ ARG CHROME_VERSION_STABLE=117.0.5938.92
 
 RUN apt-get update -qqy \
 	&& apt-get -qqy install gpg unzip \
-	&& wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O /tmp/google.deb \
+	&& wget -q -O /tmp/google.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
+ 	&& apt install -f \
  	&& dpkg -i /tmp/google.deb \
 	&& rm /tmp/google.deb \
 	&& rm -rf /var/lib/apt/lists/* /var/cache/apt/* \

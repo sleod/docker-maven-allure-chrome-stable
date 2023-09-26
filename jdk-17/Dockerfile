@@ -1,11 +1,11 @@
 FROM ubuntu:latest
 
 # common for all images
-RUN apt-get update -qqy \
-	&& apt-get upgrade -qqy \
-	&& apt-get install -f \
+RUN apt update -y \
+	&& apt upgrade -y \
+	&& apt install -f \
  	&& apt-get install wget -qqy \
-  	&& apt-get install gzip -qqy
+  	&& apt-get install gzip -qqy 
 
 # Default to UTF-8 file.encoding
 ENV LANG='de_CH.UTF-8' LANGUAGE='de_CH:de' LC_ALL='de_CH.UTF-8'

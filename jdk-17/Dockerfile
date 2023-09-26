@@ -12,7 +12,7 @@ ENV PATH $JAVA_HOME/bin:$PATH
 ENV LANG='de_CH.UTF-8' LANGUAGE='de_CH:de' LC_ALL='de_CH.UTF-8'
 
 # JDK 17
-RUN apt install openjdk-17-jdk
+RUN apt install -y openjdk-17-jdk
 
 RUN echo Verifying install ... \
     && fileEncoding="$(echo 'System.out.println(System.getProperty("file.encoding"))' | jshell -s -)"; [ "$fileEncoding" = 'UTF-8' ]; rm -rf ~/.java \

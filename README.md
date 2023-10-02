@@ -16,7 +16,7 @@ Docker image for Java based automated UI tests with chromedriver and allure repo
 > * [sleodlx/maven-allure-chrome-stable:jdk-17](https://hub.docker.com/r/sleodlx/maven-allure-chrome-stable)
 
 ## Reference
-* [The Chrome for Testing availability dashboard](https://googlechromelabs.github.io/chrome-for-testing/)
-* [Google JSON API endpoints](https://github.com/GoogleChromeLabs/chrome-for-testing#json-api-endpoints)
+> * [The Chrome for Testing availability dashboard](https://googlechromelabs.github.io/chrome-for-testing/)
+> * [Google JSON API endpoints](https://github.com/GoogleChromeLabs/chrome-for-testing#json-api-endpoints)
 
 

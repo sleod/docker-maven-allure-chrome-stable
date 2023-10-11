@@ -6,8 +6,8 @@ Docker image for Java based automated UI tests with chromedriver and allure repo
 * openjdk 17
 * Maven 3
 * Allure CLi 2.4
-* Chrome Stable (current 117)
-* Chromme Driver (/usr/bin/chromedriver)
+* Chrome Stable
+* Chrome Driver (/usr/bin/chromedriver)
 
 ## Tags
 > * [jdk-17](https://github.com/sleod/docker-maven-allure-chrome-stable/blob/main/jdk-17/Dockerfile)

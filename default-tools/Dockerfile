@@ -13,3 +13,5 @@ RUN apt-get update -y \
    	&& apt-get install git -qqy
 
 RUN gem install babelish
+
+RUN babelish

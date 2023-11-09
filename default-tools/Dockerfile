@@ -9,9 +9,12 @@ RUN apt-get update -y \
 	&& apt-get install -f \
  	&& apt-get install wget -qqy \
  	&& apt-get install curl -qqy \
+   	&& apt-get install file -qqy \
   	&& apt-get install ruby-full -qqy \
    	&& apt-get install git -qqy
 
 RUN gem install babelish
 
 RUN babelish
+
+RUN file

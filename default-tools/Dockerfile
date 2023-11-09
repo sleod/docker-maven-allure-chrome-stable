@@ -16,6 +16,6 @@ RUN apt-get update -y \
 
 RUN gem install babelish
 
-RUN babelish
+RUN babelish --help
 
-RUN file
+RUN file --help

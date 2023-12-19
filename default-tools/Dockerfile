@@ -1,7 +1,7 @@
 FROM ubuntu:latest
 
 # Default to UTF-8 file.encoding
-ENV LANG='de_CH.UTF-8' LANGUAGE='de_CH:de' LC_ALL='de_CH.UTF-8'
+ENV LANG='de_CH.UTF-8'
 
 # common for all images
 RUN apt-get update -y \
@@ -19,3 +19,17 @@ RUN gem install babelish
 RUN babelish --help
 
 RUN file --help
+
+# MAVEN
+ENV MAVEN_HOME /usr/share/maven
+ENV PATH $MAVEN_HOME/bin:$PATH
+
+COPY --from=maven:3.9.4-eclipse-temurin-11 ${MAVEN_HOME} ${MAVEN_HOME}
+COPY --from=maven:3.9.4-eclipse-temurin-11 /usr/local/bin/mvn-entrypoint.sh /usr/local/bin/mvn-entrypoint.sh
+COPY --from=maven:3.9.4-eclipse-temurin-11 /usr/share/maven/ref/settings-docker.xml /usr/share/maven/ref/settings-docker.xml
+
+RUN ln -s ${MAVEN_HOME}/bin/mvn /usr/bin/mvn
+
+ARG MAVEN_VERSION=3.9.4
+ARG USER_HOME_DIR="/root"
+ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"

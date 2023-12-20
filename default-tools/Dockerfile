@@ -20,6 +20,18 @@ RUN babelish --help
 
 RUN file --help
 
+# JDK 17
+RUN apt-get update -qqy \
+	&& apt-get install openjdk-17-jdk -qqy
+ 
+ENV JAVA_HOME /usr/lib/jvm/java-17-openjdk-amd64
+ENV PATH $JAVA_HOME/bin:$PATH
+
+RUN echo Verifying install ... \
+    && fileEncoding="$(echo 'System.out.println(System.getProperty("file.encoding"))' | jshell -s -)"; [ "$fileEncoding" = 'UTF-8' ]; rm -rf ~/.java \
+    && echo java --version && java --version \
+    && echo $JAVA_HOME.
+
 # MAVEN
 ENV MAVEN_HOME /usr/share/maven
 ENV PATH $MAVEN_HOME/bin:$PATH

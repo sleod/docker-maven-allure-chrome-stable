@@ -34,8 +34,8 @@ RUN  wget -q -O /tmp/google.deb https://dl.google.com/linux/direct/google-chrome
 	&& rm -rf /var/lib/apt/lists/* /var/cache/apt/* \
 	&& google-chrome --version
 
-# ChromeDriver
-RUN wget -q -O /tmp/chromedriver.zip https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/$CHROME_VERSION_STABLE/linux64/chromedriver-linux64.zip \
+# ChromeDriver https://storage.googleapis.com/chrome-for-testing-public/$CHROME_VERSION_STABLE/linux64/chromedriver-linux64.zip
+RUN wget -q -O /tmp/chromedriver.zip https://storage.googleapis.com/chrome-for-testing-public/$CHROME_VERSION_STABLE/linux64/chromedriver-linux64.zip \
 	&& unzip /tmp/chromedriver.zip -d /opt \
 	&& rm /tmp/chromedriver.zip \
 	&& chmod 755 /opt/chromedriver-linux64/chromedriver \

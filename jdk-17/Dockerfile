@@ -26,7 +26,7 @@ RUN apt-get update -y \
  	&& apt-get install -y libnss3 \
  	&& apt-get install -y libasound2
 	
-ARG CHROME_VERSION_STABLE=123.0.6312.58
+ARG CHROME_VERSION_STABLE=124.0.6367.91
 
 RUN  wget -q -O /tmp/google.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
  	&& dpkg -i /tmp/google.deb \

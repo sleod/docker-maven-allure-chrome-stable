@@ -25,7 +25,11 @@ RUN apt-get update -y \
         && apt-get install -y xdg-utils \
 	&& apt-get install -y libnspr4 \
  	&& apt-get install -y libnss3 \
+  	&& apt-get install -y libatk-bridge2.0-0 \
+  	&& apt-get install -y libatk1.0-0 \
+  	&& apt-get install -y libatspi2.0-0 \
  	&& apt-get install -y libasound2t64
+
 	
 ARG CHROME_VERSION_STABLE=124.0.6367.91
 
@@ -33,7 +37,7 @@ RUN  wget -q -O /tmp/google.deb https://dl.google.com/linux/direct/google-chrome
  	&& dpkg -i /tmp/google.deb \
 	&& rm /tmp/google.deb \
 	&& rm -rf /var/lib/apt/lists/* /var/cache/apt/* \
-	&& dpkg -l | grep google-chrome-stable
+	&& google-chrome --version
 
 # ChromeDriver https://storage.googleapis.com/chrome-for-testing-public/$CHROME_VERSION_STABLE/linux64/chromedriver-linux64.zip
 RUN wget -q -O /tmp/chromedriver.zip https://storage.googleapis.com/chrome-for-testing-public/$CHROME_VERSION_STABLE/linux64/chromedriver-linux64.zip \

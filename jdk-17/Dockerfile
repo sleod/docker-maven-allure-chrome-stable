@@ -14,6 +14,7 @@ RUN apt-get update -y \
 
 # Google Chrome
 RUN apt-get update -y \
+	&& apt-get upgrade -y \
 	&& apt-get install -y fonts-liberation \
    	&& apt-get install -y libcurl4 \
     	&& apt-get install -y libgbm1 \

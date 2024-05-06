@@ -25,7 +25,7 @@ RUN apt-get update -y \
         && apt-get install -y xdg-utils \
 	&& apt-get install -y libnspr4 \
  	&& apt-get install -y libnss3 \
- 	&& apt-get install -y libasound2
+ 	&& apt-get install -y libasound2t64
 	
 ARG CHROME_VERSION_STABLE=124.0.6367.91
 

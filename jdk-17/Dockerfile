@@ -33,7 +33,7 @@ RUN  wget -q -O /tmp/google.deb https://dl.google.com/linux/direct/google-chrome
  	&& dpkg -i /tmp/google.deb \
 	&& rm /tmp/google.deb \
 	&& rm -rf /var/lib/apt/lists/* /var/cache/apt/* \
-	&& google-chrome --version
+	&& dpkg -l | grep google-chrome-stable
 
 # ChromeDriver https://storage.googleapis.com/chrome-for-testing-public/$CHROME_VERSION_STABLE/linux64/chromedriver-linux64.zip
 RUN wget -q -O /tmp/chromedriver.zip https://storage.googleapis.com/chrome-for-testing-public/$CHROME_VERSION_STABLE/linux64/chromedriver-linux64.zip \

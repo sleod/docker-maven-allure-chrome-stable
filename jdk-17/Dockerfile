@@ -1,16 +1,20 @@
 FROM ubuntu:latest
 
-# Default to UTF-8 file.encoding
-ENV LANG='de_CH.UTF-8' LANGUAGE='de_CH:de' LC_ALL='de_CH.UTF-8'
-
 # common for all images
+# basic tools
 RUN apt-get update -y \
 	&& apt-get upgrade -y \
 	&& apt-get install -f \
+ 	&& apt-get install -y locales \
  	&& apt-get install wget -qqy \
   	&& apt-get install gzip -qqy \
    	&& apt-get install gpg unzip -qqy
 
+# Default to UTF-8 file.encoding
+RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
+    locale-gen
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
 
 # Google Chrome
 RUN apt-get update -y \

@@ -35,7 +35,7 @@ RUN apt-get update -y \
  	&& apt-get install -y libasound2t64
 
 	
-ARG CHROME_VERSION_STABLE=127.0.6533.119
+ARG CHROME_VERSION_STABLE=128.0.6613.84
 
 RUN  wget -q -O /tmp/google.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
  	&& dpkg -i /tmp/google.deb \

@@ -35,7 +35,7 @@ RUN apt-get update -y \
  	&& apt-get install -y libasound2t64
 
 	
-ARG CHROME_VERSION_STABLE=130.0.6723.58
+ARG CHROME_VERSION_STABLE=130.0.6723.69
 
 RUN  wget -q -O /tmp/google.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
  	&& dpkg -i /tmp/google.deb \
@@ -63,7 +63,7 @@ RUN echo Verifying install ... \
     && echo $JAVA_HOME.
 
 # Allure CLi
-ARG ALLURE_VERSION=2.24.0
+ARG ALLURE_VERSION=2.27.0
 ARG REPO_BASE=https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/
 
 #https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.24.0/allure-commandline-2.24.0.zip

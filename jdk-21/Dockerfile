@@ -52,9 +52,9 @@ RUN wget -q -O /tmp/chromedriver.zip https://storage.googleapis.com/chrome-for-t
 
 # JDK 17
 RUN apt-get update -qqy \
-	&& apt-get install openjdk-17-jdk -qqy
+	&& apt-get install openjdk-21-jdk -qqy
  
-ENV JAVA_HOME /usr/lib/jvm/java-17-openjdk-amd64
+ENV JAVA_HOME /usr/lib/jvm/java-21-openjdk-amd64
 ENV PATH $JAVA_HOME/bin:$PATH
 
 RUN echo Verifying install ... \
@@ -86,6 +86,6 @@ COPY --from=maven:3.9.4-eclipse-temurin-11 /usr/share/maven/ref/settings-docker.
 
 RUN ln -s ${MAVEN_HOME}/bin/mvn /usr/bin/mvn
 
-ARG MAVEN_VERSION=3.9.4
+ARG MAVEN_VERSION=3.9.9
 ARG USER_HOME_DIR="/root"
 ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"

@@ -22,16 +22,15 @@ ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 
 # Google Chrome
-ARG CHROME_VERSION_STABLE=135.0.7049.84
-
 RUN  wget -q -O /tmp/google.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
  	&& dpkg -i /tmp/google.deb \
 	&& rm /tmp/google.deb \
 	&& rm -rf /var/lib/apt/lists/* /var/cache/apt/* \
 	&& google-chrome --version
 
+ARG CHROME_VERSION_STABLE=135.0.7049.84
 # ChromeDriver https://storage.googleapis.com/chrome-for-testing-public/$CHROME_VERSION_STABLE/linux64/chromedriver-linux64.zip
-RUN wget -q -O /tmp/chromedriver.zip https://storage.googleapis.com/chrome-for-testing-public/$CHROME_VERSION_STABLE/linux64/chromedriver-linux64.zip \
+RUN wget -q -O /tmp/chromedriver.zip https://storage.googleapis.com/chrome-for-testing-public/${CHROME_VERSION_STABLE}/linux64/chromedriver-linux64.zip \
 	&& unzip /tmp/chromedriver.zip -d /opt \
 	&& rm /tmp/chromedriver.zip \
 	&& chmod 755 /opt/chromedriver-linux64/chromedriver \

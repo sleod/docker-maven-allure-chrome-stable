@@ -1,8 +1,5 @@
 FROM ubuntu:latest
 
-ENV PLAYWRIGHT_BROWSERS_PATH=/opt/ms-playwright
-ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=true
-
 # common for all images
 # basic tools and open JDK 21
 RUN apt-get update -y \
@@ -77,16 +74,21 @@ ENV PATH $MAVEN_HOME/bin:$PATH
 #COPY --from=maven:3.9.4-eclipse-temurin-11 /usr/local/bin/mvn-entrypoint.sh /usr/local/bin/mvn-entrypoint.sh
 #COPY --from=maven:3.9.4-eclipse-temurin-11 /usr/share/maven/ref/settings-docker.xml /usr/share/maven/ref/settings-docker.xml
 
-RUN ln -s ${MAVEN_HOME}/bin/mvn /usr/bin/mvn
+RUN ln -s ${MAVEN_HOME}/bin/mvn /usr/bin/mvn \
+    && mvn -v
 
 ARG USER_HOME_DIR="/root"
 ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
 
+#Env
+ENV PLAYWRIGHT_BROWSERS_PATH=/opt/ms-playwright
+ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=true
+ARG PLAYWRIGHT_VERSION=1.51.0
 # Create directory for Playwright browsers
 RUN mkdir -p ${PLAYWRIGHT_BROWSERS_PATH}
 
 # Download Playwright CLI tool and install browsers
-RUN mvn dependency:get -Dartifact=com.microsoft.playwright:playwright:1.42.0 && \
+RUN mvn dependency:get -Dartifact=com.microsoft.playwright:playwright:${PLAYWRIGHT_VERSION} && \
     mvn exec:java -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install" || true
 
 # Final directory to work in

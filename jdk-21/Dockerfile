@@ -69,25 +69,22 @@ RUN wget https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries
 ENV MAVEN_HOME /opt/maven
 ENV PATH $MAVEN_HOME/bin:$PATH
 
-#COPY --from=maven:3.9.4-eclipse-temurin-11 ${MAVEN_HOME} ${MAVEN_HOME}
-#COPY --from=maven:3.9.4-eclipse-temurin-11 /usr/local/bin/mvn-entrypoint.sh /usr/local/bin/mvn-entrypoint.sh
-#COPY --from=maven:3.9.4-eclipse-temurin-11 /usr/share/maven/ref/settings-docker.xml /usr/share/maven/ref/settings-docker.xml
-
-#RUN ln -s ${MAVEN_HOME}/bin/mvn /usr/bin/mvn
-
 ARG USER_HOME_DIR="/root"
 ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
 
+#Install Playwright
 #Env
 ENV PLAYWRIGHT_BROWSERS_PATH=/opt/ms-playwright
 ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=true
 ARG PLAYWRIGHT_VERSION=1.51.0
+
 # Create directory for Playwright browsers
 RUN mkdir -p ${PLAYWRIGHT_BROWSERS_PATH}
 
 # Download Playwright CLI tool and install browsers
 RUN mvn dependency:get -Dartifact=com.microsoft.playwright:playwright:${PLAYWRIGHT_VERSION} && \
-    mvn exec:java -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install" || true
+    mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install-deps" && \
+    mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install --with-deps chromium"
 
 # Final directory to work in
 WORKDIR /app

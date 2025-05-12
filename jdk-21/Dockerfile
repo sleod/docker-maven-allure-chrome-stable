@@ -9,7 +9,7 @@ RUN apt-get update -y \
     && apt-get install -y  wget curl unzip gnupg \
     fonts-liberation libcurl4 libgbm1 libgtk-4-1 libu2f-udev \
     libvulkan1 libxkbcommon0 xdg-utils libnspr4 \
-    libnss3 libatk-bridge2.0-0 libatk1.0-0 libatspi2.0-0 libasound2t64 \
+    libnss3 libatk-bridge2.0-0 libatk1.0-0 libatspi2.0-0 libasound2 \
     ca-certificates \
     apt-transport-https \
     lsb-release \

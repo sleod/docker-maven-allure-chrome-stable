@@ -1,7 +1,4 @@
-FROM ubuntu:latest
-
-# Set environment variables
-ENV DEBIAN_FRONTEND=noninteractive
+FROM maven:3.9.6-eclipse-temurin-21 AS builder
 
 # common for all images
 # basic tools and open JDK 21
@@ -9,16 +6,27 @@ RUN apt-get update -y \
 	&& apt-get upgrade -y \
 	&& apt-get install -f \
  	&& apt-get install -y locales \
-    && apt-get install -y wget curl unzip git gpg openjdk-21-jdk \
-    fonts-liberation libcurl4 libgbm1 libgtk-4-1 libu2f-udev \
-      	libvulkan1 libxkbcommon0 xdg-utils libnspr4 \
-     	libnss3 libatk-bridge2.0-0 libatk1.0-0 libatspi2.0-0 libasound2t64 \
+    && apt-get install -y  \
+    wget  \
+    curl  \
+    unzip  \
+    gnupg \
+    ca-certificates \
+    apt-transport-https \
+    libnss3 \
+    libatk-bridge2.0-0 \
+    libxss1 \
+    libasound2 \
+    libxshmfence1 \
+    libgbm-dev \
+    libgtk-3-0 \
+    libx11-xcb1 \
+    xauth \
+    xvfb \
+    fonts-liberation \
+    lsb-release \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-
-
-ENV JAVA_HOME /usr/lib/jvm/java-21-openjdk-amd64
-ENV PATH $JAVA_HOME/bin:$PATH
 
 # Default to UTF-8 file.encoding
 RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
@@ -44,8 +52,7 @@ RUN wget -q -O /tmp/chromedriver.zip https://storage.googleapis.com/chrome-for-t
 #Verify Install
 RUN echo Verifying install ... \
     && fileEncoding="$(echo 'System.out.println(System.getProperty("file.encoding"))' | jshell -s -)"; [ "$fileEncoding" = 'UTF-8' ]; rm -rf ~/.java \
-    && echo java --version && java --version \
-    && echo $JAVA_HOME.
+    && echo java --version && java --version
 
 # Allure CLi
 ARG ALLURE_VERSION=2.33.0
@@ -61,26 +68,26 @@ RUN set -x && tar=allure-commandline-$ALLURE_VERSION.zip \
 	&& chmod 755 $location \
 	&& ln -s $location/bin/allure /usr/bin
 
-# Install Maven manually
-ARG MAVEN_VERSION=3.9.6
+## Install Maven manually
+#ARG MAVEN_VERSION=3.9.6
+#
+#RUN wget https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.zip -O /tmp/maven.zip && \
+#    unzip /tmp/maven.zip -d /opt && \
+#    ln -s /opt/apache-maven-${MAVEN_VERSION} /opt/maven && \
+#    ln -s /opt/maven/bin/mvn /usr/bin/mvn && \
+#    rm /tmp/maven.zip
+#
+##Set MAVEN
+#ENV MAVEN_HOME /opt/maven
+#ENV PATH $MAVEN_HOME/bin:$PATH
+#
+#ARG USER_HOME_DIR="/root"
+#ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
 
-RUN wget https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.zip -O /tmp/maven.zip && \
-    unzip /tmp/maven.zip -d /opt && \
-    ln -s /opt/apache-maven-${MAVEN_VERSION} /opt/maven && \
-    ln -s /opt/maven/bin/mvn /usr/bin/mvn && \
-    rm /tmp/maven.zip
-
-#Set MAVEN
-ENV MAVEN_HOME /opt/maven
-ENV PATH $MAVEN_HOME/bin:$PATH
-
-ARG USER_HOME_DIR="/root"
-ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
-
-# Install Node.js and npm
-RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - && \
-    apt-get install -y nodejs && \
-    apt-get clean
+# Install Node.js LTS (v18)
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs && \
+    npm install -g npm
 
 #Install Playwright
 #Env
@@ -88,12 +95,11 @@ ENV PLAYWRIGHT_BROWSERS_PATH=/opt/ms-playwright
 ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=true
 ARG PLAYWRIGHT_VERSION=1.51.0
 
-# Create directory for Playwright browsers
-RUN mkdir -p ${PLAYWRIGHT_BROWSERS_PATH}
-
 # Install Playwright and its dependencies
-RUN npm install -g playwright@${PLAYWRIGHT_VERSION} && \
-    PLAYWRIGHT_BROWSERS_PATH=${PLAYWRIGHT_BROWSERS_PATH} npx playwright install
+RUN npm install -g playwright && \
+    mkdir -p $PLAYWRIGHT_BROWSERS_PATH && \
+    && chmod 755 $PLAYWRIGHT_BROWSERS_PATH \
+    playwright install --with-deps
 
 # Final directory to work in
 WORKDIR /app

@@ -6,33 +6,17 @@ RUN apt-get update -y \
 	&& apt-get upgrade -y \
 	&& apt-get install -f \
  	&& apt-get install -y locales \
-    && apt-get install -y  \
-    wget  \
-    curl  \
-    unzip  \
-    gnupg \
+    && apt-get install -y  wget curl unzip gnupg \
+    fonts-liberation libcurl4 libgbm1 libgtk-4-1 libu2f-udev \
+    libvulkan1 libxkbcommon0 xdg-utils libnspr4 \
+    libnss3 libatk-bridge2.0-0 libatk1.0-0 libatspi2.0-0 libasound2t64 \
     ca-certificates \
     apt-transport-https \
-    fonts-liberation \
     lsb-release \
-    libnss3 \
-    libatk-bridge2.0-0 \
     libxss1 \
-    libcurl4 \
-    libgtk-4-1 \
-    libu2f-udev \
-    libvulkan1 \
-    libasound2 \
-    libasound2t64 \
-    libxkbcommon0 \
-    libnspr4 \
-    libatk1.0-0 \
     libxshmfence1 \
     libgbm-dev \
-    libgtk-3-0 \
     libx11-xcb1 \
-    libgbm1 \
-    libatspi2.0-0 \
     xauth \
     xvfb \
     xdg-utils \

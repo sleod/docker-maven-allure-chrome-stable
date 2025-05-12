@@ -1,5 +1,8 @@
 FROM ubuntu:latest
 
+# Set environment variables
+ENV DEBIAN_FRONTEND=noninteractive
+
 # common for all images
 # basic tools and open JDK 21
 RUN apt-get update -y \
@@ -10,7 +13,9 @@ RUN apt-get update -y \
     fonts-liberation libcurl4 libgbm1 libgtk-4-1 libu2f-udev \
       	libvulkan1 libxkbcommon0 xdg-utils libnspr4 \
      	libnss3 libatk-bridge2.0-0 libatk1.0-0 libatspi2.0-0 libasound2t64 \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
 
 ENV JAVA_HOME /usr/lib/jvm/java-21-openjdk-amd64
 ENV PATH $JAVA_HOME/bin:$PATH
@@ -28,7 +33,7 @@ RUN  wget -q -O /tmp/google.deb https://dl.google.com/linux/direct/google-chrome
 	&& rm -rf /var/lib/apt/lists/* /var/cache/apt/* \
 	&& google-chrome --version
 
-ARG CHROME_VERSION_STABLE=135.0.7049.84
+ARG CHROME_VERSION_STABLE=136.0.7103.92
 # ChromeDriver https://storage.googleapis.com/chrome-for-testing-public/$CHROME_VERSION_STABLE/linux64/chromedriver-linux64.zip
 RUN wget -q -O /tmp/chromedriver.zip https://storage.googleapis.com/chrome-for-testing-public/${CHROME_VERSION_STABLE}/linux64/chromedriver-linux64.zip \
 	&& unzip /tmp/chromedriver.zip -d /opt \
@@ -65,12 +70,17 @@ RUN wget https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries
     ln -s /opt/maven/bin/mvn /usr/bin/mvn && \
     rm /tmp/maven.zip
 
-# MAVEN
+#Set MAVEN
 ENV MAVEN_HOME /opt/maven
 ENV PATH $MAVEN_HOME/bin:$PATH
 
 ARG USER_HOME_DIR="/root"
 ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
+
+# Install Node.js and npm
+RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - && \
+    apt-get install -y nodejs && \
+    apt-get clean
 
 #Install Playwright
 #Env
@@ -81,10 +91,9 @@ ARG PLAYWRIGHT_VERSION=1.51.0
 # Create directory for Playwright browsers
 RUN mkdir -p ${PLAYWRIGHT_BROWSERS_PATH}
 
-# Download Playwright CLI tool and install browsers
-RUN mvn dependency:get -Dartifact=com.microsoft.playwright:playwright:${PLAYWRIGHT_VERSION} && \
-    mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install-deps" && \
-    mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install --with-deps chromium"
+# Install Playwright and its dependencies
+RUN npm install -g playwright@${PLAYWRIGHT_VERSION} && \
+    PLAYWRIGHT_BROWSERS_PATH=${PLAYWRIGHT_BROWSERS_PATH} npx playwright install
 
 # Final directory to work in
 WORKDIR /app

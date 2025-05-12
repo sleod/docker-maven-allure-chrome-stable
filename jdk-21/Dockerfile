@@ -91,7 +91,7 @@ ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=true
 ARG PLAYWRIGHT_VERSION=1.51.0
 
 # Install Playwright and its dependencies
-RUN npm install -g playwright \
+RUN npm install -g playwright@$PLAYWRIGHT_VERSION \
     && mkdir -p $PLAYWRIGHT_BROWSERS_PATH \
     && chmod 755 $PLAYWRIGHT_BROWSERS_PATH \
     && playwright install --with-deps

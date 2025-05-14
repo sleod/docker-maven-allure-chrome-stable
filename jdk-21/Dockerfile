@@ -10,16 +10,11 @@ RUN apt-get update -y \
     fonts-liberation libcurl4 libgbm1 libgtk-4-1 libu2f-udev \
     libvulkan1 libxkbcommon0 xdg-utils libnspr4 \
     libnss3 libatk-bridge2.0-0 libatk1.0-0 libatspi2.0-0 libasound2 \
-    ca-certificates \
-    apt-transport-https \
-    lsb-release \
     libxss1 \
     libxshmfence1 \
     libgbm-dev \
     libx11-xcb1 \
-    xauth \
     xvfb \
-    xdg-utils \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -44,13 +39,8 @@ RUN wget -q -O /tmp/chromedriver.zip https://storage.googleapis.com/chrome-for-t
 	&& chmod 755 /opt/chromedriver-linux64/chromedriver \
 	&& ln -s /opt/chromedriver-linux64/chromedriver /usr/bin/chromedriver
 
-#Verify Install
-RUN echo Verifying install ... \
-    && fileEncoding="$(echo 'System.out.println(System.getProperty("file.encoding"))' | jshell -s -)"; [ "$fileEncoding" = 'UTF-8' ]; rm -rf ~/.java \
-    && echo java --version && java --version
-
 # Allure CLi
-ARG ALLURE_VERSION=2.33.0
+ARG ALLURE_VERSION=2.34.0
 ARG REPO_BASE=https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/
 
 #https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/
@@ -62,22 +52,6 @@ RUN set -x && tar=allure-commandline-$ALLURE_VERSION.zip \
    	&& location=/opt/allure-$ALLURE_VERSION \
 	&& chmod 755 $location \
 	&& ln -s $location/bin/allure /usr/bin
-
-## Install Maven manually
-#ARG MAVEN_VERSION=3.9.6
-#
-#RUN wget https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.zip -O /tmp/maven.zip && \
-#    unzip /tmp/maven.zip -d /opt && \
-#    ln -s /opt/apache-maven-${MAVEN_VERSION} /opt/maven && \
-#    ln -s /opt/maven/bin/mvn /usr/bin/mvn && \
-#    rm /tmp/maven.zip
-#
-##Set MAVEN
-#ENV MAVEN_HOME /opt/maven
-#ENV PATH $MAVEN_HOME/bin:$PATH
-#
-#ARG USER_HOME_DIR="/root"
-#ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
 
 # Install Node.js LTS (v18)
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
@@ -95,6 +69,13 @@ RUN npm install -g playwright@$PLAYWRIGHT_VERSION \
     && mkdir -p $PLAYWRIGHT_BROWSERS_PATH \
     && chmod 755 $PLAYWRIGHT_BROWSERS_PATH \
     && playwright install --with-deps
+
+# Verify installations
+RUN java -version && \
+    mvn -version && \
+    node -v && \
+    npm -v && \
+    npx playwright --version
 
 # Final directory to work in
 WORKDIR /app

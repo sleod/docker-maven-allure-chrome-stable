@@ -62,7 +62,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
 #Env
 ENV PLAYWRIGHT_BROWSERS_PATH=/opt/ms-playwright
 ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=true
-ARG PLAYWRIGHT_VERSION=1.54.1
+ARG PLAYWRIGHT_VERSION=1.54.0
 
 # Install Playwright and its dependencies
 RUN npm install -g playwright@$PLAYWRIGHT_VERSION \

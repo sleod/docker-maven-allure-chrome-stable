@@ -31,7 +31,7 @@ RUN  wget -q -O /tmp/google.deb https://dl.google.com/linux/direct/google-chrome
 	&& rm -rf /var/lib/apt/lists/* /var/cache/apt/* \
 	&& google-chrome --version
 
-ARG CHROME_VERSION_STABLE=139.0.7258.154
+ARG CHROME_VERSION_STABLE=140.0.7339.80
 # ChromeDriver https://storage.googleapis.com/chrome-for-testing-public/$CHROME_VERSION_STABLE/linux64/chromedriver-linux64.zip
 RUN wget -q -O /tmp/chromedriver.zip https://storage.googleapis.com/chrome-for-testing-public/${CHROME_VERSION_STABLE}/linux64/chromedriver-linux64.zip \
 	&& unzip /tmp/chromedriver.zip -d /opt \
@@ -62,7 +62,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
 #Env
 ENV PLAYWRIGHT_BROWSERS_PATH=/opt/ms-playwright
 ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=true
-ARG PLAYWRIGHT_VERSION=1.54.0
+ARG PLAYWRIGHT_VERSION=1.55.0
 
 # Install Playwright and its dependencies
 RUN npm install -g playwright@$PLAYWRIGHT_VERSION \
